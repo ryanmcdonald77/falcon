@@ -19,6 +19,7 @@ public class FormLabel: FormRowType, TableViewCellSelectable {
         self.subtitle = subtitle
         self.image = image
         self.cellSelectionBlock = selectionBlock
+        self.shouldAutoDeselectRow = true
     }
     
     // MARK: - TableViewRepresentable
@@ -40,6 +41,7 @@ public class FormLabel: FormRowType, TableViewCellSelectable {
     // MARK: - TableViewCellSelectable
     
     public var cellSelectionBlock: CellSelectionBlock?
+    public var shouldAutoDeselectRow: Bool
     
     // MARK: - TableViewCellDeletable
     
