@@ -15,6 +15,7 @@ public class FormButton: FormRowType, TableViewCellSelectable {
     public init(title: String? = nil, selectionBlock: CellSelectionBlock? = nil) {
         self.title = title
         self.cellSelectionBlock = selectionBlock
+        self.shouldAutoDeselectRow = true
     }
     
     // MARK: - TableViewRepresentable
@@ -36,6 +37,7 @@ public class FormButton: FormRowType, TableViewCellSelectable {
     // MARK: - TableViewCellSelectable
     
     public var cellSelectionBlock: CellSelectionBlock?
+    public var shouldAutoDeselectRow: Bool
     
     // MARK: - TableViewCellDeletable
     

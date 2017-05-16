@@ -24,6 +24,7 @@ public protocol TableViewCellUpdatable {
 public typealias CellSelectionBlock = () -> () // should block have a cell parameter?
 public protocol TableViewCellSelectable {
     var cellSelectionBlock: CellSelectionBlock? { get set }
+    var shouldAutoDeselectRow: Bool { get set }
 }
 
 public typealias CellDeletionBlock = () -> () // should block have a cell parameter?

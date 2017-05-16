@@ -231,11 +231,13 @@ extension FormDataSource: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
         guard let formRow = objectAtIndexPath(indexPath) as? TableViewCellSelectable else {
             // this row is not selectable
             return
+        }
+        
+        if formRow.shouldAutoDeselectRow {
+            tableView.deselectRow(at: indexPath, animated: true)
         }
         
         if let cellSelectionBlock = formRow.cellSelectionBlock {
