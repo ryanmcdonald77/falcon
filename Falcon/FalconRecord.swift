@@ -44,9 +44,17 @@ public class FalconRecord {
     }
 }
 
+extension NSPersistentContainer {
+    public func newViewContext() -> NSManagedObjectContext {
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        context.persistentStoreCoordinator = persistentStoreCoordinator
+        return context
+    }
+}
+
 extension NSManagedObjectContext {
     public func childContext() -> NSManagedObjectContext {
-        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        let context = NSManagedObjectContext(concurrencyType: concurrencyType)
         context.parent = self
         return context
     }
