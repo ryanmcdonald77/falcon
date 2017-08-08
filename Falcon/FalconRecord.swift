@@ -105,11 +105,15 @@ extension NSManagedObject {
             fetchRequest.predicate = pred
         }
 
-        do {
-            return try context.fetch(fetchRequest) as! [NSManagedObject]
-        } catch {
-            return [NSManagedObject]()
+        var result = [NSManagedObject]()
+        context.performAndWait {
+            do {
+                result = try context.fetch(fetchRequest) as! [NSManagedObject]
+            } catch {
+                result = [NSManagedObject]()
+            }
         }
+        return result
     }
     
     public static func find(in context: NSManagedObjectContext = FalconRecord.viewContext,
