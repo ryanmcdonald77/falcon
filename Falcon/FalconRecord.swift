@@ -60,10 +60,12 @@ extension NSManagedObjectContext {
     }
     
     public func saveContext() {
-        do {
-            try save()
-        } catch {
-            print(error)
+        performAndWait { [weak self] in
+            do {
+                try self?.save()
+            } catch {
+                print(error)
+            }
         }
     }
     
