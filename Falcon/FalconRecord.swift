@@ -97,16 +97,24 @@ extension NSManagedObject {
     public static func find(in context: NSManagedObjectContext = FalconRecord.viewContext,
                                where format: String? = nil, _ args: CVarArg...) -> [NSManagedObject] {
         
-        let fetchRequest = self.requestAll()
+        var predicate: NSPredicate? = nil
         
         if let format = format {
             let pred = withVaList(args) { (pointer) -> NSPredicate in
                 return NSPredicate(format: format, arguments: pointer)
             }
-            
-            fetchRequest.predicate = pred
+            predicate = pred
         }
-
+        
+        return self.find(in: context, with: predicate)
+    }
+    
+    public static func find(in context: NSManagedObjectContext = FalconRecord.viewContext,
+                            with predicate: NSPredicate?) -> [NSManagedObject] {
+        
+        let fetchRequest = self.requestAll()
+        fetchRequest.predicate = predicate
+        
         var result = [NSManagedObject]()
         context.performAndWait {
             do {
