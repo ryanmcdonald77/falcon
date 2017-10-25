@@ -47,8 +47,13 @@ public class FormDataSource: NSObject {
                 tableView?.register(type.nib, forCellReuseIdentifier: type.reuseIdentifier)
             }
             
-            tableView?.register(section.headerViewType, forHeaderFooterViewReuseIdentifier: String(describing: section.headerViewType))
-            tableView?.register(section.footerViewType, forHeaderFooterViewReuseIdentifier: String(describing: section.footerViewType))
+            if let sectionHeaderViewType = section.headerViewType {
+                tableView?.register(sectionHeaderViewType, forHeaderFooterViewReuseIdentifier: String(describing: sectionHeaderViewType))
+            }
+            
+            if let sectionFooterViewType = section.footerViewType {
+                tableView?.register(sectionFooterViewType, forHeaderFooterViewReuseIdentifier: String(describing: sectionFooterViewType))
+            }
         }
     }
     
@@ -156,8 +161,8 @@ extension FormDataSource: UITableViewDataSource {
             return UITableViewAutomaticDimension
         }
         
-        guard formSections[section].header != nil else {
-            return UITableViewAutomaticDimension
+        guard formSections[section].headerViewType != nil else {
+            return 0
         }
 
         return CGFloat(formSections[section].headerHeight)
@@ -168,20 +173,22 @@ extension FormDataSource: UITableViewDataSource {
             return UITableViewAutomaticDimension
         }
         
-        guard formSections[section].footer != nil  else {
-            return UITableViewAutomaticDimension
+        guard formSections[section].footerViewType != nil  else {
+            return 0
         }
 
         return CGFloat(formSections[section].footerHeight)
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard tableView.style == .plain else {
+        
+        guard tableView.style == .plain  else {
             return nil
         }
         
-        let type = formSections[section].headerViewType
-        
+        guard let type = formSections[section].headerViewType else {
+            return nil
+        }
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: type)) else {
             return nil
         }
@@ -198,7 +205,9 @@ extension FormDataSource: UITableViewDataSource {
             return nil
         }
         
-        let type = formSections[section].footerViewType
+        guard let type = formSections[section].footerViewType else {
+            return nil
+        }
         
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: type)) else {
             return nil
